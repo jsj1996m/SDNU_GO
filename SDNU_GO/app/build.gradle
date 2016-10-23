@@ -1,0 +1,77 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+    useLibrary 'org.apache.http.legacy'
+
+    lintOptions {
+        //lint 遇到 error 时继续 构建
+        abortOnError false
+        //build release 版本 时 开启lint 检测
+        checkReleaseBuilds false
+        // 防止在发布的时候出现因MissingTranslation导致Build Failed!
+        disable 'MissingTranslation'
+    }
+
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+
+        // Move the tests to tests/java, tests/res, etc...
+        instrumentTest.setRoot('tests')
+
+        // Move the build types to build-types/<type>
+        // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
+        // This moves them out of them default location under src/<type>/... which would
+        // conflict with src/ being used by the main source set.
+        // Adding new build types or product flavors should be accompanied
+        // by a similar customization.
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')
+    }
+    defaultConfig {
+        applicationId "cn.edu.sdnu.go"
+        minSdkVersion 16
+        targetSdkVersion 22
+        versionCode 7
+        versionName "1.0.7"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+repositories {
+    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+    compile project(':library')
+//    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:design:23.4.0'
+    compile files('libs/AMap_Location_V2.4.1_20160414.jar')
+    compile files('libs/AMap_Search_V3.2.1_20160308.jar')
+    compile files('libs/Volley.jar')
+    //GSON
+    compile 'com.google.code.gson:gson:2.3'
+    //    MaterialDesign
+    compile 'com.github.vajro:MaterialDesignLibrary:1.6'
+    //高德导航
+    compile files('libs/AMap3DMap_3.3.3_AMapNavi_1.9.1_20160726.jar')
+    //功能介绍
+    compile 'com.github.amlcurran.showcaseview:library:5.4.3'
+    //fab菜单
+    compile 'com.gordonwong:material-sheet-fab:1.2.1'
+
+    //fab卡片布局
+    compile 'com.android.support:cardview-v7:23.0.1'
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+}
